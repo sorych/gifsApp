@@ -1,16 +1,16 @@
-package com.sorych.gifs.controller.util;
+package com.sorych.gifsapp.controller.util;
 
-import com.sorych.gifs.controller.response.GifItem;
-import com.sorych.gifs.controller.response.GifSearchResponse;
-import com.sorych.gifs.controller.response.GifsControllerResponse;
-import com.sorych.gifs.service.dto.Gif;
-import com.sorych.gifs.service.dto.GifSearchResult;
+import com.sorych.gifsapp.controller.response.GifItem;
+import com.sorych.gifsapp.controller.response.GifSearchResponse;
+import com.sorych.gifsapp.controller.response.GifsControllerResponse;
+import com.sorych.gifsapp.service.dto.Gif;
+import com.sorych.gifsapp.service.dto.SearchResult;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ControllerResponseBuilder {
 
-  public static GifsControllerResponse buildResponse(List<GifSearchResult> searchResults) {
+  public static GifsControllerResponse buildResponse(List<SearchResult> searchResults) {
     GifsControllerResponse response = new GifsControllerResponse();
     List<GifSearchResponse> data =
         searchResults.stream()
@@ -20,7 +20,7 @@ public class ControllerResponseBuilder {
     return response;
   }
 
-  private static GifSearchResponse toSearchResponse(GifSearchResult searchResult) {
+  private static GifSearchResponse toSearchResponse(SearchResult searchResult) {
     List<GifItem> gifs =
         searchResult.getGifs().stream()
             .map(ControllerResponseBuilder::toGifItem)

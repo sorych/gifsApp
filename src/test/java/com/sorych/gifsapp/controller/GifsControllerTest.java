@@ -1,4 +1,4 @@
-package com.sorych.gifs.controller;
+package com.sorych.gifsapp.controller;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -6,11 +6,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sorych.gifs.controller.response.GifsControllerResponse;
-import com.sorych.gifs.service.GifsService;
-import com.sorych.gifs.service.GiphyService;
-import com.sorych.gifs.service.dto.Gif;
-import com.sorych.gifs.service.dto.GifSearchResult;
+import com.sorych.gifsapp.controller.response.GifsControllerResponse;
+import com.sorych.gifsapp.service.GifsService;
+import com.sorych.gifsapp.service.dto.Gif;
+import com.sorych.gifsapp.service.dto.SearchResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -97,10 +96,10 @@ public class GifsControllerTest {
     return params;
   }
 
-  private List<GifSearchResult> createMockResponseForSearchTerms(List<String> terms) {
-    List<GifSearchResult> results = new ArrayList<>();
+  private List<SearchResult> createMockResponseForSearchTerms(List<String> terms) {
+    List<SearchResult> results = new ArrayList<>();
     for (String term : terms) {
-      GifSearchResult searchResult = new GifSearchResult();
+      SearchResult searchResult = new SearchResult();
       searchResult.setSearchTerm(term);
       List<Gif> gifs = new ArrayList<>();
       Gif gif = new Gif("SomeGifId", "SomeUrl");

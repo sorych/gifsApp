@@ -1,9 +1,9 @@
-package com.sorych.gifs.controller;
+package com.sorych.gifsapp.controller;
 
-import com.sorych.gifs.controller.response.GifsControllerResponse;
-import com.sorych.gifs.controller.util.ControllerResponseBuilder;
-import com.sorych.gifs.service.GifsService;
-import com.sorych.gifs.service.dto.GifSearchResult;
+import com.sorych.gifsapp.controller.response.GifsControllerResponse;
+import com.sorych.gifsapp.controller.util.ControllerResponseBuilder;
+import com.sorych.gifsapp.service.GifsService;
+import com.sorych.gifsapp.service.dto.SearchResult;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class GifsController {
       return ResponseEntity.badRequest().build();
     }
     List<String> uniqueTerms = searchTerm.stream().distinct().collect(Collectors.toList());
-    List<GifSearchResult> searchResults = gifsService.findGifs(uniqueTerms);
+    List<SearchResult> searchResults = gifsService.findGifs(uniqueTerms);
     return ResponseEntity.ok(ControllerResponseBuilder.buildResponse(searchResults));
   }
 }

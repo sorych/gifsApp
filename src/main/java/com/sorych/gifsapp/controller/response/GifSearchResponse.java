@@ -1,9 +1,11 @@
-package com.sorych.gifs.controller.response;
+package com.sorych.gifsapp.controller.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GifSearchResponse {
+  @JsonProperty("search_term")
   private String searchTerm;
 
   private List<GifItem> gifs = new ArrayList<>();
@@ -13,8 +15,7 @@ public class GifSearchResponse {
     this.gifs = gifs;
   }
 
-  public GifSearchResponse() {
-  }
+  public GifSearchResponse() {}
 
   public String getSearchTerm() {
     return searchTerm;

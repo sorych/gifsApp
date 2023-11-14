@@ -1,7 +1,11 @@
-package com.sorych.gifs.controller.response;
+package com.sorych.gifsapp.controller.response;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GifItem {
+  @JsonProperty("gif_id")
   private String gifId;
+
   private String url;
 
   public GifItem(String gifId, String url) {

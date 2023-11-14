@@ -1,4 +1,4 @@
-package com.sorych.gifs.service.dto;
+package com.sorych.gifsapp.service.dto;
 
 public class Gif {
   private String id;

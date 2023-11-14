@@ -1,4 +1,4 @@
-package com.sorych.gifs;
+package com.sorych.gifsapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

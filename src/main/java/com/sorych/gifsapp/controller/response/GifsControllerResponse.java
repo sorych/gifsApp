@@ -1,4 +1,4 @@
-package com.sorych.gifs.controller.response;
+package com.sorych.gifsapp.controller.response;
 
 //  Requested JSON structure:
 // {

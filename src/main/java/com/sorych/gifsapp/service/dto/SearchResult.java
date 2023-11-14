@@ -1,8 +1,8 @@
-package com.sorych.gifs.service.dto;
+package com.sorych.gifsapp.service.dto;
 
 import java.util.List;
 
-public class GifSearchResult {
+public class SearchResult {
   private String searchTerm;
 
   private List<Gif> gifs;
