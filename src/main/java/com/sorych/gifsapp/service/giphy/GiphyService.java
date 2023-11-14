@@ -18,7 +18,11 @@ import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -78,8 +82,7 @@ public class GiphyService implements GifsService {
     List<Gif> gifs = Collections.emptyList();
     // TODO what if delay, service unavailable, etc
     try {
-      String url = apiUrl + "?api_key=" + apiKey + "&q=" + searchTerm + "&limit=" + gifsSearchLimit;
-      String jsonResponse = restTemplate.getForObject(url, String.class);
+      String jsonResponse = callGiphyApi(searchTerm);
       GiphyApiResponse giphyApiResponse =
           objectMapper.readValue(jsonResponse, GiphyApiResponse.class);
       gifs = processApiCallResult(giphyApiResponse);
@@ -92,6 +95,15 @@ public class GiphyService implements GifsService {
     }
     result.setGifs(gifs);
     return result;
+  }
+
+  @Retryable(
+      value = {HttpClientErrorException.class, HttpServerErrorException.class},
+      maxAttempts = 3,
+      backoff = @Backoff(random = true, delay = 1000, maxDelay = 5000, multiplier = 2))
+  private String callGiphyApi(String searchTerm) {
+    String url = apiUrl + "?api_key=" + apiKey + "&q=" + searchTerm + "&limit=" + gifsSearchLimit;
+    return restTemplate.getForObject(url, String.class);
   }
 
   private List<Gif> processApiCallResult(GiphyApiResponse giphyApiResponse) {
