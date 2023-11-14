@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sorych.gifs.controller.response.GifsControllerResponse;
 import com.sorych.gifs.service.GifsService;
+import com.sorych.gifs.service.GiphyService;
 import com.sorych.gifs.service.dto.Gif;
 import com.sorych.gifs.service.dto.GifSearchResult;
 import java.util.ArrayList;
@@ -70,11 +71,10 @@ public class GifsControllerTest {
     String searchTerm = "a";
     List<String> searchTerms = Arrays.asList(searchTerm, searchTerm, searchTerm);
     MultiValueMap<String, String> params = prepareQueryParams(searchTerms);
-    ResultActions result = mvc.perform(MockMvcRequestBuilders.get("/query").params(params));
-
     List<String> uniqueTerms = searchTerms.stream().distinct().collect(Collectors.toList());
     when(gifsService.findGifs(uniqueTerms))
         .thenReturn(createMockResponseForSearchTerms(uniqueTerms));
+    ResultActions result = mvc.perform(MockMvcRequestBuilders.get("/query").params(params));
     result.andExpect(status().isOk());
     result.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 

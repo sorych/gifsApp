@@ -1,2 +1,3 @@
-package com.sorych.gifs.service;public class GifsServiceTest {
-}
+package com.sorych.gifs.service;
+
+public class GifsServiceTest {}
