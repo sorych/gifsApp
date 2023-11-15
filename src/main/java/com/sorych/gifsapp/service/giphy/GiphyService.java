@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
@@ -94,6 +95,10 @@ public class GiphyService implements GifsService {
     }
     result.setGifs(gifs);
     return result;
+  }
+
+  @CacheEvict(value = "gifs", key = "#searchTerm")
+  public void evictCache(String searchTerm) {
   }
 
   @Retryable(
