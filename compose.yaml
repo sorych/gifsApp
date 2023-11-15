@@ -1,1 +1,12 @@
 version: "3"
+services:
+  app:
+    image: gifsapp:1.0.0
+    ports:
+      - "8080:8080"
+    environment:
+      - GIPHY_API_URL=https://api.giphy.com/v1/gifs/search
+      - GIPHY_API_APIKEY=VWk9EThkl6v5V4a9S9YfoD4RalccXT4p
+      - GIPHY_API_MAX_THREADS_COUNT=3
+      - APP_GIFS_SEARCH_LIMIT=10
+      - SPRING_PROFILES_ACTIVE=production

@@ -27,6 +27,14 @@ dependencies {
 
 tasks.named('bootBuildImage') {
 	builder = 'paketobuildpacks/builder-jammy-base:latest'
+	imageName = 'gifsapp:1.0.0'
+	environment = [
+			SERVER_TOMCAT_MAX_PARAMETER_COUNT : '42',
+			GIPHY_API_URL : 'https://api.giphy.com/v1/gifs/search',
+			GIPHY_API_APIKEY : 'REPLACE_WITH_API_KEY',
+			GIPHY_API_MAX_THREADS_COUNT : '3',
+			APP_GIFS_SEARCH_LIMIT: '10'
+	]
 }
 
 tasks.named('test') {
