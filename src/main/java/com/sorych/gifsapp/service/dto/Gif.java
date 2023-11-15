@@ -1,6 +1,8 @@
 package com.sorych.gifsapp.service.dto;
 
-public class Gif {
+import java.io.Serializable;
+
+public class Gif implements Serializable {
   private String id;
   private String url;
 

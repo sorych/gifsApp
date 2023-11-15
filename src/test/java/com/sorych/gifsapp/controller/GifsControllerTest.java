@@ -1,5 +1,6 @@
 package com.sorych.gifsapp.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -47,8 +48,7 @@ public class GifsControllerTest {
     GifsControllerResponse response =
         objectMapper.readValue(
             result.andReturn().getResponse().getContentAsString(), GifsControllerResponse.class);
-
-    assert response.getData() != null;
+    assertThat(response.getData()).isNotNull();
 
     response
         .getData()
@@ -81,10 +81,10 @@ public class GifsControllerTest {
         objectMapper.readValue(
             result.andReturn().getResponse().getContentAsString(), GifsControllerResponse.class);
 
-    assert response.getData() != null;
-    assert response.getData().size() == 1;
-    assert response.getData().get(0).getSearchTerm().equals(searchTerm);
-    assert response.getData().get(0).getGifs() != null;
+    assertThat(response.getData()).isNotNull();
+    assertThat(response.getData().size()).isEqualTo(1);
+    assertThat(response.getData().get(0).getSearchTerm()).isEqualTo(searchTerm);
+    assertThat(response.getData().get(0).getGifs()).isNotNull();
   }
 
   private MultiValueMap<String, String> prepareQueryParams(List<String> searchTerms) {

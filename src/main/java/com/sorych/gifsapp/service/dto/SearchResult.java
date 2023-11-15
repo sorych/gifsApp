@@ -1,8 +1,9 @@
 package com.sorych.gifsapp.service.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class SearchResult {
+public class SearchResult implements Serializable {
   private String searchTerm;
 
   private List<Gif> gifs;
