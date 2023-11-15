@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -78,7 +79,8 @@ public class GiphyService implements GifsService {
     return results;
   }
 
-  private SearchResult searchGifsByTerm(String searchTerm) {
+  @Cacheable(value = "gifs", key = "#searchTerm", sync = true)
+  public SearchResult searchGifsByTerm(String searchTerm) {
     SearchResult result = new SearchResult();
     result.setSearchTerm(searchTerm);
     List<Gif> gifs = Collections.emptyList();
