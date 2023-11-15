@@ -1,0 +1,51 @@
+spring:
+  profiles:
+    active: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cache:
+    redis:
+      time-to-live: 600000
+
+server:
+  port: 8080
+  tomcat:
+    max-parameter-count: 42
+
+giphy:
+  api:
+    url: https://api.giphy.com/v1/gifs/search
+    apiKey: VWk9EThkl6v5V4a9S9YfoD4RalccXT4p
+    maxThreadsCount: 3
+
+app:
+  gifsSearchLimit: 10
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+
+server:
+  port: 8080
+  tomcat:
+      max-parameter-count: 42
+
+giphy:
+  api:
+    url: https://api.test.com/search
+    apiKey: my_api_key
+    maxThreadsCount: 3
+
+app:
+  gifsSearchLimit: 10

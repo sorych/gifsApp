@@ -9,6 +9,7 @@ IMAGE_NAME := gifsapp:1.0.0
 APP_PORT := 8080
 CONTAINER_NAME := gifsapp_inst
 REDIS_CONTAINER_NAME := redis-container
+REDIS_PORT := 6379
 
 build:
 	./gradlew bootBuildImage
@@ -18,7 +19,7 @@ run-app:
 
 # Redis
 start-redis:
-	docker run --rm -d --name $(REDIS_CONTAINER_NAME) -p 6379:6379 redis:alpine
+	docker run --rm -d --name $(REDIS_CONTAINER_NAME) -p $(REDIS_PORT):6379 redis:alpine
 
 stop-redis:
 	docker stop $(REDIS_CONTAINER_NAME)

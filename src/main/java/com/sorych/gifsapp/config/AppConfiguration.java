@@ -1,4 +1,4 @@
-package com.sorych.gifsapp;
+package com.sorych.gifsapp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

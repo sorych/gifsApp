@@ -17,9 +17,11 @@ import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebCl
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest(classes = {GiphyService.class, GiphyApiCaller.class})
+@ActiveProfiles("test")
 @AutoConfigureWebClient
 class GiphyServiceTest {
 

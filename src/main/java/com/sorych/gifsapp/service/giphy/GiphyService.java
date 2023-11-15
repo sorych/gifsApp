@@ -25,7 +25,6 @@ public class GiphyService implements GifsService {
   @Autowired
   public GiphyService(
       @Value("${giphy.api.maxThreadsCount}") Integer maxThreadsCount,
-      RestTemplate restTemplate,
       GiphyApiCaller giphyApiCaller) {
     this.maxThreadsCount = maxThreadsCount;
     this.giphyApiCaller = giphyApiCaller;
