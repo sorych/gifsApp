@@ -1,7 +1,6 @@
 package com.sorych.gifsapp.service.giphy;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sorych.gifsapp.service.GifsService;
 import com.sorych.gifsapp.service.dto.Gif;
@@ -16,6 +15,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
@@ -34,6 +35,8 @@ public class GiphyService implements GifsService {
   private Integer gifsSearchLimit;
   private RestTemplate restTemplate;
   private ObjectMapper objectMapper;
+
+  private static final Logger logger = LoggerFactory.getLogger(GiphyService.class);
 
   @Autowired
   public GiphyService(
@@ -65,8 +68,7 @@ public class GiphyService implements GifsService {
                   try {
                     return future.get();
                   } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                    // todo log
+                    logger.error(e.toString());
                     return null;
                   }
                 })
@@ -80,18 +82,13 @@ public class GiphyService implements GifsService {
     SearchResult result = new SearchResult();
     result.setSearchTerm(searchTerm);
     List<Gif> gifs = Collections.emptyList();
-    // TODO what if delay, service unavailable, etc
     try {
       String jsonResponse = callGiphyApi(searchTerm);
       GiphyApiResponse giphyApiResponse =
           objectMapper.readValue(jsonResponse, GiphyApiResponse.class);
       gifs = processApiCallResult(giphyApiResponse);
-    } catch (RestClientException e) {
-      // todo log
-    } catch (JsonMappingException e) {
-      // todo log
-    } catch (JsonProcessingException e) {
-      // todo log
+    } catch (RestClientException | JsonProcessingException e) {
+      logger.error("search for " + searchTerm + " error:" + e);
     }
     result.setGifs(gifs);
     return result;
