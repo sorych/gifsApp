@@ -27,7 +27,7 @@ public class GifsController {
   @Autowired
   public GifsController(
       GifsService gifsService,
-      @Value("${server.tomcat.max-parameter-count:10000}") Integer maxParameterCount) {
+      @Value("${server.tomcat.max-parameter-count:10000}") int maxParameterCount) {
     this.gifsService = gifsService;
     this.maxParameterCount = maxParameterCount;
   }

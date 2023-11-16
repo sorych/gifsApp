@@ -1,4 +1,4 @@
-package com.sorych.gifsapp.service.giphy;
+package com.sorych.gifsapp.service.giphy.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +23,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -51,7 +52,7 @@ public class GiphyApiCaller {
   }
 
   @Cacheable(value = "gifs", key = "#searchTerm", sync = true)
-  public SearchResult searchGifsByTerm(String searchTerm) {
+  public SearchResult searchGifsByTerm(String searchTerm) throws JsonProcessingException {
     SearchResult result = new SearchResult();
     result.setSearchTerm(searchTerm);
     List<Gif> gifs = Collections.emptyList();
@@ -61,8 +62,8 @@ public class GiphyApiCaller {
           objectMapper.readValue(jsonResponse, GiphyApiResponse.class);
       gifs = processApiCallResult(giphyApiResponse);
     } catch (RestClientException | JsonProcessingException e) {
-      // TODO no return - unhealthy!
-      logger.error("search for " + searchTerm + " error:" + e);
+      logger.error("search " + searchTerm + " e:" + e);
+      throw e;
     }
     result.setGifs(gifs);
     return result;

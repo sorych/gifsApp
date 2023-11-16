@@ -1,19 +1,21 @@
 package com.sorych.gifsapp.service.giphy;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sorych.gifsapp.service.GifsService;
 import com.sorych.gifsapp.service.dto.SearchResult;
+import com.sorych.gifsapp.service.giphy.util.GiphyApiCaller;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClientException;
 
 @Service
 public class GiphyService implements GifsService {
@@ -33,25 +35,37 @@ public class GiphyService implements GifsService {
   @Override
   public List<SearchResult> findGifs(List<String> searchTerms) {
     ExecutorService executorService = Executors.newFixedThreadPool(maxThreadsCount);
-    List<Future<SearchResult>> futures =
+
+    List<CompletableFuture<SearchResult>> futures =
         searchTerms.stream()
             .map(
                 searchTerm ->
-                    executorService.submit(() -> giphyApiCaller.searchGifsByTerm(searchTerm)))
+                    CompletableFuture.supplyAsync(
+                            () -> {
+                              try {
+                                return giphyApiCaller.searchGifsByTerm(searchTerm);
+                              } catch (JsonProcessingException e) {
+                                logger.error(
+                                    "JsonProcessingException during CompletableFuture: " + e);
+                                throw new RuntimeException("Error during giphyApiCaller call", e);
+                              }
+                            },
+                            executorService)
+                        .exceptionally(
+                            ex -> {
+                              logger.error("Exception during CompletableFuture: " + ex.toString());
+                              if (ex.getCause() instanceof RestClientException) {
+                                throw new RestClientException(ex.getCause().getMessage());
+                              }
+                              throw new RuntimeException("Error during giphyApiCaller call", ex);
+                            }))
             .toList();
+
     List<SearchResult> results =
         futures.stream()
-            .map(
-                future -> {
-                  try {
-                    return future.get();
-                  } catch (InterruptedException | ExecutionException e) {
-                    logger.error(e.toString());
-                    return null;
-                  }
-                })
+            .map(CompletableFuture::join) // Throws exception if any occurred during execution
             .filter(Objects::nonNull)
-            .toList();
+            .collect(Collectors.toList());
     executorService.shutdown();
     return results;
   }

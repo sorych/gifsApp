@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.sorych.gifsapp.service.dto.Gif;
 import com.sorych.gifsapp.service.dto.SearchResult;
+import com.sorych.gifsapp.service.giphy.util.GiphyApiCaller;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
