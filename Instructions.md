@@ -48,17 +48,19 @@ Read more details about the gifsApp in the README file
 3. **Service Authentication:**
    - Implement robust authentication mechanisms like API keys, JWT, or OAuth, depending on your use case and security requirements.
    - Ensure proper validation and authorization for incoming requests.
-4. **Distributed Cache:**
+4.  **Cosider API Rate limiter:**
+    - Adding an API rate limiter depends on various factors such as the expected usage patterns, potential for abuse, and the limitations imposed by the external services.
+5. **Distributed Cache:**
    - If scaling horizontally, consider using a distributed cache solution or a Redis cluster to ensure consistent caching across multiple instances.
-5. **Logging Enhancements:**
+6. **Logging Enhancements:**
    - Configure log formats, log levels, and integrate with a centralized logging system.
    - Utilize structured logging for better log analysis and debugging.
-6. **Pagination Mechanism:**
+7. **Pagination Mechanism:**
    - Implement pagination to efficiently handle large result sets.
    - Provide clients with control over the amount of data returned.
-7. **Health Check Endpoint:**
+8. **Health Check Endpoint:**
    - Implement a health-check endpoint to monitor the system's status.
    - Include checks for external dependencies like the GIPHY endpoint.
-8. **Two-Step Docker Image Building:**
+9. **Two-Step Docker Image Building:**
    - Use a multi-stage Docker build to minimize the size of the final image.
    - The first stage can include building the application, and the second stage can involve copying only necessary artifacts.
