@@ -1,5 +1,6 @@
 package com.sorych.gifsapp.controller;
 
+import com.sorych.gifsapp.controller.GifsController.GifsControllerBadRequestException;
 import java.util.concurrent.CompletionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,21 @@ public class CustomExceptionHandler {
   @ExceptionHandler(RestClientException.class)
   @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
   public ResponseEntity handleRestClientException(RestClientException ex) {
-    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Error while contacting Giphy API");
+    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+        .body("Error while contacting Giphy API");
   }
 
   @ExceptionHandler(CompletionException.class)
   @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
   public ResponseEntity handleRestClientException(CompletionException ex) {
-    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Error while contacting Giphy API");
+    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+        .body("Error while contacting Giphy API");
+  }
+
+  @ExceptionHandler(GifsControllerBadRequestException.class)
+  @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+  public ResponseEntity handleRestClientException(GifsControllerBadRequestException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 
   @ExceptionHandler(Exception.class)
@@ -29,4 +38,3 @@ public class CustomExceptionHandler {
     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
-

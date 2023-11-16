@@ -22,14 +22,18 @@ public class GifsController {
 
   private int maxParameterCount;
 
+  private int searchTermLengthLimit;
+
   private static final Logger logger = LoggerFactory.getLogger(GifsController.class);
 
   @Autowired
   public GifsController(
       GifsService gifsService,
-      @Value("${server.tomcat.max-parameter-count:10000}") int maxParameterCount) {
+      @Value("${server.tomcat.max-parameter-count:10000}") int maxParameterCount,
+      @Value("${app.searchTermLengthLimit:50}") int searchTermLengthLimit) {
     this.gifsService = gifsService;
     this.maxParameterCount = maxParameterCount;
+    this.searchTermLengthLimit = searchTermLengthLimit;
   }
 
   @GetMapping("/query")
@@ -40,10 +44,23 @@ public class GifsController {
     }
     List<String> uniqueTerms = searchTerm.stream().distinct().collect(Collectors.toList());
     if (uniqueTerms.size() > maxParameterCount) {
-      logger.info("received too much params");
-      return ResponseEntity.badRequest().build();
+      String msg = "received too much params, limit is " + maxParameterCount;
+      logger.debug(msg);
+      throw new GifsControllerBadRequestException(msg);
     }
+    if (uniqueTerms.stream().anyMatch(term -> term.length() > searchTermLengthLimit)) {
+      String msg = "the search term lenght limit is " + searchTermLengthLimit;
+      logger.debug(msg);
+      throw new GifsControllerBadRequestException(msg);
+    }
+
     List<SearchResult> searchResults = gifsService.findGifs(uniqueTerms);
     return ResponseEntity.ok(ControllerResponseBuilder.buildResponse(searchResults));
+  }
+
+  public class GifsControllerBadRequestException extends RuntimeException {
+    public GifsControllerBadRequestException(String message) {
+      super(message);
+    }
   }
 }

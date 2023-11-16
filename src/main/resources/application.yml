@@ -28,6 +28,7 @@ giphy:
 
 app:
   gifsSearchLimit: 10
+  searchTermLengthLimit: 50
 
 ---
 
