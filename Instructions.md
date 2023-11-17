@@ -4,9 +4,10 @@ This document provides instructions on how to build, run tests, and start the se
 
 ## Build
 
-1. Ensure you have Docker installed on your machine.
-2. Open a terminal and navigate to the project directory.
-3. Leverage Makefile:
+1. Java 17 is needed
+2. Ensure you have Docker installed on your machine.
+3. Open a terminal and navigate to the project directory.
+4. Leverage Makefile:
 
 * to build, run tests and start the service in docker available on port 8080 use
 ```bash
@@ -29,7 +30,7 @@ make run-app
 make stop
 ```
 
-4. Test the app by making GET calls to localhost:
+5. Test the app by making GET calls to localhost:
   
 ```bash
  localhost:8080/query?searchTerm=a&searchTerm=b
